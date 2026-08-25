@@ -18,6 +18,7 @@ public class BookingRequest {
     private List<Integer> childAges;
     private BigDecimal totalPrice;
     private List<PassengerRequest> passengers;
+    private String status;
 
     private String userEmail;
 }

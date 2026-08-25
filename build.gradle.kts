@@ -32,6 +32,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-mail")
     implementation("org.postgresql:postgresql:42.7.3")
     implementation("io.jsonwebtoken:jjwt-api:0.12.6")
+    implementation("com.github.librepdf:openpdf:2.0.3")
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("org.postgresql:postgresql")
@@ -43,7 +44,6 @@ dependencies {
     runtimeOnly("org.postgresql:postgresql")
     runtimeOnly("org.postgresql:postgresql")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-
 }
 
 tasks.withType<Test> {

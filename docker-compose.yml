@@ -1,0 +1,37 @@
+services:
+  postgres:
+    image: postgres:18
+    container_name: airticket-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${DATASOURCE_USERNAME}
+      POSTGRES_PASSWORD: ${DATASOURCE_PASSWORD}
+      POSTGRES_DB: airticketbooking_docker
+    ports:
+      - "5433:5432"
+
+  app:
+    build: .
+    env_file:
+      - .env
+    container_name: booking-airtickets-app
+    restart: always
+    ports:
+      - "8078:8078"
+    volumes:
+      - ./large_airports.sql:/docker-entrypoint-initdb.d/large_airports.sql
+    environment:
+      SERVER_PORT: ${SERVER_PORT_DOCKER}
+      DATASOURCE_USERNAME: ${DATASOURCE_USERNAME}
+      DATASOURCE_PASSWORD: ${DATASOURCE_PASSWORD}
+      DATASOURCE_URL: jdbc:postgresql://postgres:5432/airticketbooking_docker
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      SECURITY_USER_NAME: ${SECURITY_USER_NAME}
+      SECURITY_USER_PASSWORD: ${SECURITY_USER_PASSWORD}
+      MAIL_HOST: ${MAIL_HOST}
+      MAIL_PORT: ${MAIL_PORT}
+      MAIL_USER: ${MAIL_USERNAME}
+      MAIL_PASS: ${MAIL_PASSWORD}
+    depends_on:
+      - postgres
+

@@ -5,7 +5,11 @@ import com.example.airticketbooking.Flight.FlightOption;
 import com.example.airticketbooking.Flight.FlightResponse;
 import com.example.airticketbooking.Flight.FlightSearchDto;
 import com.example.airticketbooking.Flight.SerpApiFlightResponse;
+import com.example.airticketbooking.Pricing.PassengerPriceDto;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class FlightService {
@@ -48,11 +52,26 @@ public class FlightService {
 
               double outboundBasePrice = option.getPrice();
 
+              List<PassengerPriceDto> passengerPrices = new ArrayList<>();
+
               int adults = req.getPassengers().getAdults();
               int children = req.getPassengers().getChildren();
 
+              for(int i=0; i< adults; i++) {
+                  double adultPrice = outboundBasePrice * 0.6;
+
+                  passengerPrices.add(new PassengerPriceDto(adultPrice, "ADULT"));
+              }
+
+              for(int i=0; i< children; i++) {
+                  double childPrice = outboundBasePrice * 0.6 * 0.75;
+
+                  passengerPrices.add(new PassengerPriceDto(childPrice, "CHILD"));
+              }
+
               double outboundTotalPrice = ((outboundBasePrice * adults) + (outboundBasePrice * 0.75 * children)) * 0.6;
               option.setPrice(outboundTotalPrice);
+              option.setPassengerPrices(passengerPrices);
           }
 
             response1.setOutboundFlights(outboundFlights.getOutboundFlights());

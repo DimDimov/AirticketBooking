@@ -1,52 +1,51 @@
 package com.example.airticketbooking.Controllers;
 
 
-import com.example.airticketbooking.DTO.BookingRequest;
+import com.example.airticketbooking.DTO.BookingStatusDto;
+import com.example.airticketbooking.Enum.BookingStatus;
 import com.example.airticketbooking.Model.Booking;
-import com.example.airticketbooking.Model.User;
+import com.example.airticketbooking.Repositories.BookingRepository;
 import com.example.airticketbooking.Service.BookingService;
 import com.example.airticketbooking.pdf.PdfGenerator;
 import jakarta.mail.MessagingException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/bookings")
-public class BookingController {
+@RequestMapping("/api/admin/bookings")
+public class AdminBookingController {
+
 
     private final BookingService bookingService;
     private final PdfGenerator pdfGenerator;
 
-    public BookingController(BookingService bookingService, PdfGenerator pdfGenerator) {
+    public AdminBookingController(BookingService bookingService, PdfGenerator pdfGenerator) {
         this.bookingService = bookingService;
         this.pdfGenerator = pdfGenerator;
     }
 
-    @PostMapping
-    public Booking createBooking(@RequestBody BookingRequest request) throws MessagingException {
-        return bookingService.createBooking(request);
+    @GetMapping("/all_bookings")
+    public List<Booking> getAllBookings() {
+        return bookingService.getAllBookings();
     }
 
-    @GetMapping("/my-bookings")
-    public List<Booking> getBookingsByUser(Authentication authentication) {
-
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-
-        return bookingService.getBookingsByEmail(userDetails.getUsername());
-    }
-
-    @GetMapping("/booking_by_id/{id}")
-    public Booking getBooking(@PathVariable Long id) {
+    @GetMapping("booking_by_id/{id}")
+    public Booking getBooking (@PathVariable Long id) {
         return bookingService.getBookingById(id);
+    }
 
+    @PutMapping("/{id}/status")
+    public ResponseEntity<?> updateStatus(
+            @PathVariable Long id,
+            @RequestBody BookingStatusDto dto) {
+        bookingService.updateStatus(id, dto.getStatus());
+
+        return  ResponseEntity.ok().build();
     }
 
     @GetMapping("/{id}/ticket")
@@ -58,6 +57,12 @@ public class BookingController {
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_PDF_VALUE)
                 .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=ticket.pdf")
                 .body(pdf);
+    }
+
+    @PostMapping("{id}/resend")
+    public ResponseEntity<?> resendEmail (@PathVariable Long id) throws MessagingException, IOException {
+        bookingService.resendEmail(id);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{id}/ticket/download")

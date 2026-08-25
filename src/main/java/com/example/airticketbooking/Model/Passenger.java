@@ -1,6 +1,7 @@
 package com.example.airticketbooking.Model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -22,6 +23,7 @@ public class Passenger {
     private String seat;
     private String seatClass;
     private BigDecimal seatPrice;
+    private BigDecimal flightPrice;
     private String meal;
     private BigDecimal mealPrice;
     private BigDecimal luggagePrice;
@@ -30,5 +32,6 @@ public class Passenger {
 
     @ManyToOne
     @JoinColumn(name = "booking_id")
+    @JsonIgnore
     private Booking booking;
 }

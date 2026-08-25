@@ -1,6 +1,7 @@
 package com.example.airticketbooking.Model;
 
 
+import com.example.airticketbooking.Enum.BookingStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -19,6 +20,8 @@ public class Booking {
      private int adults;
      private int children;
     private BigDecimal totalPrice;
+    @Enumerated(EnumType.STRING)
+    private BookingStatus status;
 
     @OneToMany(
             mappedBy = "booking",

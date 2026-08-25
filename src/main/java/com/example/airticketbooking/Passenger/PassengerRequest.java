@@ -31,6 +31,8 @@ public class PassengerRequest {
 
     private BigDecimal seatPrice;
 
+    private BigDecimal flightPrice;
+
     private String meal;
 
     private BigDecimal mealPrice;
