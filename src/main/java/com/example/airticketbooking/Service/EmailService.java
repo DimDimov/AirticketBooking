@@ -1,7 +1,10 @@
 package com.example.airticketbooking.Service;
 
 import com.example.airticketbooking.Model.Booking;
+import com.example.airticketbooking.Model.FlightBooking;
 import com.example.airticketbooking.Model.Passenger;
+import com.example.airticketbooking.Passenger.Meal.MealSegment;
+import com.example.airticketbooking.Passenger.Seat.Seat;
 import com.example.airticketbooking.pdf.PdfGenerator;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -35,59 +38,169 @@ public class EmailService {
         helper.setTo(booking.getUser().getEmail());
         helper.setSubject("Ihre Flugbuchungsbestätigung");
 
-        StringBuilder passengerInfo = new StringBuilder();
-
-        for (Passenger passenger : booking.getPassengers()) {
-            passengerInfo.append("<b>Passagier: </b>")
-                    .append(passenger.getFirstName())
-                    .append(" ")
-                    .append(passenger.getLastName())
-                    .append("<br>");
-
-            passengerInfo.append("<b>Sitzplatz: </b>")
-                    .append(passenger.getSeat())
-                    .append("<br>");
-
-            passengerInfo.append("<b>Sitzklasse: </b>")
-                    .append(passenger.getSeatClass())
-                    .append("<br>");
-
-            passengerInfo.append("<b>Malzeit: </b>")
-                    .append(passenger.getMeal())
-                    .append("<br><br>");
-        }
+        StringBuilder emailInfo = new StringBuilder();
 
         DateTimeFormatter  formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
 
-        String text = """ 
+
+        for (FlightBooking flight : booking.getFlights()) {
+
+            if ("outbound".equals(flight.getDirection())) {
+
+                emailInfo.append("<h3>Hinflug - ")
+                        .append(flight.getFlightNumber())
+                        .append("</h3>");
+
+                emailInfo.append("<p>");
+
+                emailInfo.append("<b>Fluggesellschaft: </b>")
+                        .append(flight.getAirline())
+                        .append("<br>");
+
+                emailInfo.append("<b>Flugnummer: </b>")
+                        .append(flight.getFlightNumber())
+                        .append("<br>");
+
+                emailInfo.append("<b>Abflug: </b>")
+                        .append(flight.getDepartureAirportName())
+                        .append("<br>");
+
+                emailInfo.append("<b>Abfahrtszeit: </b>")
+                        .append(flight.getDepartureTime().format(formatter))
+                        .append("<br>");
+
+                emailInfo.append("<b>Ankunft: </b>")
+                        .append(flight.getArrivalAirportName())
+                        .append("<br>");
+
+                emailInfo.append("<b>Ankunftszeit: </b>")
+                        .append(flight.getArrivalTime().format(formatter))
+                        .append("<br>");
+
+                emailInfo.append("<p>");
+
+                for (Passenger passenger : booking.getPassengers()) {
+
+                    emailInfo.append("<b>Passagier: </b>")
+                            .append(passenger.getFirstName())
+                            .append(" ")
+                            .append(passenger.getLastName())
+                            .append("<br>");
+
+                    for (Seat seat : passenger.getSeats()) {
+
+                        if (flight.getDirection().equals(seat.getDirection())
+                                && flight.getFlightIndex().equals(seat.getFlightIndex())) {
+                            emailInfo.append("<b>Sitzplatz: </b>")
+                                    .append(seat.getSeat())
+                                    .append("<br>");
+
+                            emailInfo.append("<b>Sitzklasse: </b>")
+                                    .append(seat.getSeatClass())
+                                    .append("<br>");
+                        }
+                    }
+
+                        for (MealSegment meal : passenger.getMeals()) {
+
+                            if (flight.getDirection().equals(meal.getDirection())
+                                    && flight.getFlightIndex().equals(meal.getFlightIndex())) {
+                                emailInfo.append("<b>Malzeit: </b>")
+                                        .append(meal.getMeal())
+                                        .append("<br><br>");
+                            }
+                        }
+                    }
+                 } else if ("inbound".equals(flight.getDirection())) {
+
+                emailInfo.append("<h3>Rückflug - ")
+                             .append(flight.getFlightNumber())
+                             .append("</h3>");
+
+                emailInfo.append("<p>");
+
+                emailInfo.append("<b>Fluggesellschaft: </b>")
+                            .append(flight.getAirline())
+                            .append("<br>");
+
+                emailInfo.append("<b>Flugnummer: </b>")
+                            .append(flight.getFlightNumber())
+                            .append("<br>");
+
+                emailInfo.append("<b>Abflug: </b>")
+                            .append(flight.getDepartureAirportName())
+                            .append("<br>");
+
+                emailInfo.append("<b>Abfahrtszeit: </b>")
+                            .append(flight.getDepartureTime().format(formatter))
+                            .append("<br>");
+
+                emailInfo.append("<b>Ankunft: </b>")
+                            .append(flight.getArrivalAirportName())
+                            .append("<br>");
+
+                emailInfo.append("<b>Ankunftszeit: </b>")
+                            .append(flight.getArrivalTime().format(formatter))
+                            .append("<br>");
+
+                emailInfo.append("<p>");
+
+                     for (Passenger passenger : booking.getPassengers()) {
+
+                         emailInfo.append("<b>Passagier: </b>")
+                                 .append(passenger.getFirstName())
+                                 .append(" ")
+                                 .append(passenger.getLastName())
+                                 .append("<br>");
+
+                         for (Seat seat : passenger.getSeats()) {
+
+                             if (flight.getDirection().equals(seat.getDirection())
+                                     && flight.getFlightIndex().equals(seat.getFlightIndex())) {
+                                 emailInfo.append("<b>Sitzplatz: </b>")
+                                         .append(seat.getSeat())
+                                         .append("<br>");
+
+                                 emailInfo.append("<b>Sitzklasse: </b>")
+                                         .append(seat.getSeatClass())
+                                         .append("<br>");
+                             }
+                         }
+                             for (MealSegment meal: passenger.getMeals()) {
+
+                                 if (flight.getDirection().equals(meal.getDirection())
+                                         && flight.getFlightIndex().equals(meal.getFlightIndex())) {
+                                     emailInfo.append("<b>Malzeit: </b>")
+                                             .append(meal.getMeal())
+                                             .append("<br><br>");
+
+                                 }
+                     }
+                 }
+            }
+        }
+
+        String text = """
                 <html>
                 <body>
+             
                   <img src="cid:logo" width="50">
+                
                 <h2>Guten Tag,</h2>
+             
                        <p> Ihre Buchung wurde bestätigt.</p>
-                       <p>
-                        <b>Fluggesellschaft: </b> %s<br>
-                        <b>Flugnummer: </b> %s<br>
-
-                        <b>Abflug: </b> %s<br>
-                        <b>Abfahrtszeit: </b> %s<br>
-                        <b>Ankunft: </b> %s <br>
-                        <b>Ankunftszeit: </b> %s <br>
-                        </p>
+                    
                         %s
+                        
                         <p>Vielen Dank für die Wähl von  dem Air Ticket Booking.</p>
+                     
                 <p>Wir wünschen Ihnen eine angenehme Reise!</p>
+             
                 </body>
                 </html>
- """.formatted(
-                booking.getFlight().getAirline(),
-                booking.getFlight().getFlightNumber(),
-                booking.getFlight().getDepartureAirportName(),
-                booking.getFlight().getDepartureTime().format(formatter),
-                booking.getFlight().getArrivalAirportName(),
-                booking.getFlight().getArrivalTime().format(formatter),
-                passengerInfo.toString()
-        );
+""".formatted(
+                emailInfo.toString());
+
         helper.setText(text, true);
         helper.addInline(
                 "logo",
@@ -127,7 +240,7 @@ public class EmailService {
 
         helper.setTo(booking.getUser().getEmail());
         helper.setSubject("Ihr Flugticket");
-        helper.setText("Ihr Flugticket ist beigefuegt");
+        helper.setText("Ihr Flugticket ist beigefügt");
 
         helper.addAttachment("Flugkarte.pdf", new ByteArrayResource(pdf));
         mailSender.send(message);

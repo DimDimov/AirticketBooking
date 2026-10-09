@@ -2,6 +2,7 @@ package com.example.airticketbooking.Model;
 
 
 import com.example.airticketbooking.Enum.BookingStatus;
+import com.example.airticketbooking.Enum.PaymentStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -22,6 +23,9 @@ public class Booking {
     private BigDecimal totalPrice;
     @Enumerated(EnumType.STRING)
     private BookingStatus status;
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus paymentStatus;
+
 
     @OneToMany(
             mappedBy = "booking",
@@ -31,9 +35,9 @@ public class Booking {
 
      private LocalDateTime bookingTime;
 
-     @OneToOne(cascade = CascadeType.ALL)
-     @JoinColumn(name = "flight_booking_id")
-     private FlightBooking flight;
+     @OneToMany(cascade = CascadeType.ALL)
+     @JoinColumn(name = "booking_id")
+     private List<FlightBooking> flights;
 
      @ManyToOne
     @JoinColumn(name = "user_id")

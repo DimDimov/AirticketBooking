@@ -3,7 +3,6 @@ package com.example.airticketbooking.Controllers;
 
 import com.example.airticketbooking.DTO.BookingRequest;
 import com.example.airticketbooking.Model.Booking;
-import com.example.airticketbooking.Model.User;
 import com.example.airticketbooking.Service.BookingService;
 import com.example.airticketbooking.pdf.PdfGenerator;
 import jakarta.mail.MessagingException;
@@ -13,10 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/bookings")
@@ -45,8 +42,8 @@ public class BookingController {
 
     @GetMapping("/booking_by_id/{id}")
     public Booking getBooking(@PathVariable Long id) {
-        return bookingService.getBookingById(id);
 
+        return bookingService.getBookingById(id);
     }
 
     @GetMapping("/{id}/ticket")

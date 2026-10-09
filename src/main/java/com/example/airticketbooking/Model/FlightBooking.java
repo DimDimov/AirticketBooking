@@ -21,7 +21,10 @@ public class FlightBooking {
 
     private String flightNumber;
 
-    private String tripType;
+    /*private String tripType;*/
+
+    private String direction;
+    private Integer flightIndex;
 
     private String departureAirportName;
     private String departureAirportIata;
@@ -29,11 +32,9 @@ public class FlightBooking {
     private String arrivalAirportIata;
 
     @ManyToOne
-    @JoinColumn(name = "departure_airport_id")
     private Airport departureAirport;
 
     @ManyToOne
-    @JoinColumn(name = "arrival_airport_id")
     private  Airport arrivalAirport;
 
     private LocalDateTime departureTime;

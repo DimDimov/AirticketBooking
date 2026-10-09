@@ -1,11 +1,15 @@
 package com.example.airticketbooking.Passenger;
 
+import com.example.airticketbooking.Passenger.Luggage.LuggageRequest;
+import com.example.airticketbooking.Passenger.Meal.MealRequest;
+import com.example.airticketbooking.Passenger.Seat.SeatRequest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Getter
 @Setter
@@ -21,7 +25,7 @@ public class PassengerRequest {
 
     private String type;
 
-    private String seat;
+    private List<SeatRequest> seats;
 
     private Integer childAge;
 
@@ -33,14 +37,11 @@ public class PassengerRequest {
 
     private BigDecimal flightPrice;
 
-    private String meal;
+    private MealRequest meals;
 
     private BigDecimal mealPrice;
 
     private BigDecimal luggagePrice;
 
-    private boolean cabinLuggage;
-
-    private Integer checkedLuggage;
-
+    private LuggageRequest luggage;
 }

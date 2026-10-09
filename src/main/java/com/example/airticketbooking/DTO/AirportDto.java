@@ -1,9 +1,10 @@
 package com.example.airticketbooking.DTO;
 
+import lombok.Data;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
 
+@Data
 @Getter
 public class AirportDto {
 
@@ -11,4 +12,5 @@ public class AirportDto {
     private String time;
     private String name;
     private String iataCode;
+
 }

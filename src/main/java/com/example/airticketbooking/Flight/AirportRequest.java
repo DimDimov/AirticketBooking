@@ -7,4 +7,5 @@ import lombok.Data;
 public class AirportRequest {
     private String city;
     private String name;
+    private String iataCode;
 }

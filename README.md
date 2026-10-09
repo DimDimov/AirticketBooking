@@ -31,6 +31,32 @@ flight search data and display available flights to the user.
 * Access booking details
 * Generate tickets
 
+## Payment Flow
+The application implements an event-driven payment flow using Apache Kafka to 
+handle asynchronous communication between the Payment Service 
+and the Booking Service.
+
+### How it works.
+
+1. **Payment Processing:** The Payment Service processes the user's payment.
+2. **Event Publishing:** After successful payment, the Payment Service publishes 
+a payment completion event to Kafka.
+3. **Event Consumption:** The Booking Service consumes the event and updates 
+the booking's payment status in the database.
+4. **Status Retrieval:** The React frontend retrieves the latest payment status 
+through a REST API, using JWT-based authentication.
+5. **Confirmation:** Once the payment status is PAID, the frontend displays the 
+booking confirmation message.
+
+## Payment Statuses
+* **PENDING** — Payment is being processed.
+* **PAID** — Payment was successful.
+* **FAILED** — Payment failed.
+
+The payment status is maintained separately from the booking status, allowing 
+payment processing and booking lifecycle management to be handled 
+independently.
+
 # 🛠️ Technologies
 
 ## Backend
@@ -39,6 +65,7 @@ flight search data and display available flights to the user.
 * Spring Boot
 * Spring Security
 * JWT
+* Apache Kafka
 * REST API
 * JPA/Hibernate
 * PostgreSQL
@@ -47,6 +74,7 @@ flight search data and display available flights to the user.
 
 * React
 * JavaScript
+* Vite
 * HTML
 * CSS
 
