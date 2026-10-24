@@ -35,14 +35,13 @@ public class UserService {
         emailService.sendAccountBlockedEmail(user.getEmail());
     }
 
-    public void unblockUser(Long id) throws MessagingException {
+    public void unblockUser(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow();
 
         user.setEnabled(true);
 
         userRepository.save(user);
-       /* emailService.sendAccountBlockedEmail(user.getEmail());*/
     }
 
 }

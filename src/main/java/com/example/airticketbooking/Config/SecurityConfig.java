@@ -39,7 +39,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/api/auth/login", "/api/auth/verify", "/api/feedback", "/api/confirmation/websocket-test").permitAll()
-                        .requestMatchers("/api/auth/register", "/mail/**", "/api/pricing/**", "/api/payment").permitAll()
+                        .requestMatchers("/api/auth/register", "/api/auth/google", "/mail/**", "/api/pricing/**", "/api/payment").permitAll()
                         .requestMatchers("/api/admin/**", "/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/bookings/**").authenticated()
                         .anyRequest().authenticated()
