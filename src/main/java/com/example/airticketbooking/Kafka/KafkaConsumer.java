@@ -26,7 +26,12 @@ public class KafkaConsumer {
 
     public void consumePayment(String message) {
 
+        System.out.println(
+                java.time.Instant.now() + " - 9. KAFKA EVENT RECEIVED"
+        );
+
         try {
+
             PaymentCompletedEvent event =
                     objectMapper.readValue(
                             message,
@@ -36,7 +41,15 @@ public class KafkaConsumer {
             if ("SUCCESS".equals(event.getStatus())) {
                 Long bookingId = event.getBookingId();
 
+                System.out.println(
+                        java.time.Instant.now() + " - 10. BOOKING UPDATE START"
+                );
+
                 bookingService.markPaymentSuccessful(bookingId);
+
+                System.out.println(
+                        java.time.Instant.now() + " - 11. BOOKING UPDATE METHOD RETURNED"
+                );
 
             }
 

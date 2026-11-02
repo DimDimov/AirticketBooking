@@ -30,7 +30,7 @@ SET default_table_access_method = heap;
 -- Name: large_airports; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.large_airports (
+CREATE TABLE public.airports (
     id integer,
     city character varying(255),
     iata_code character varying(10),
@@ -39,7 +39,7 @@ CREATE TABLE public.large_airports (
 );
 
 
-ALTER TABLE public.large_airports OWNER TO postgres;
+ALTER TABLE public.airports OWNER TO postgres;
 
 --
 -- TOC entry 3460 (class 0 OID 32769)
@@ -47,7 +47,7 @@ ALTER TABLE public.large_airports OWNER TO postgres;
 -- Data for Name: large_airports; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.large_airports (id, city, iata_code, airport_name, type) FROM stdin;
+COPY public.airports (id, city, iata_code, airport_name, type) FROM stdin;
 3	Honiara	HIR	Honiara International Airport	large_airport
 605715	Vlorë	VLO	(Duplicate)Vlora International Airport	large_airport
 606676	Sydney	\N	(Duplicate)Western Sydney International Airport	large_airport

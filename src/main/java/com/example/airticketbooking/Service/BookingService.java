@@ -331,31 +331,13 @@ public class BookingService {
 
     public Booking getBookingById(Long id) {
 
-
-        System.out.println(
-                "SERVICE: loading booking " +
-                        id + " at " +
-                        java.time.Instant.now()
-        );
-
-        Booking booking = bookingRepository
+        return bookingRepository
                 .findById(id)
                 .orElseThrow(() ->
                         new RuntimeException(
                                 "Booking not found: " + id
                         )
                 );
-
-        System.out.println(
-                "SERVICE: DB paymentStatus = " +
-                        booking.getPaymentStatus() +
-                        " at " +
-                        java.time.Instant.now()
-        );
-
-
-      /*  return bookingRepository.getBookingsById(id);*/
-        return booking;
     }
 
     public void updateStatus(Long id, BookingStatus status) {
