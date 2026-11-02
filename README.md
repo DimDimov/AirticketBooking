@@ -140,17 +140,59 @@ Before starting the application, make sure you have installed:
 
 ## 3. Start the application with Docker Compose
 
-    From the project root, run:
-    docker compose up --build
+### 1. Clone the repository 
+   gh repo clone DimDimov/AirticketBooking
+
+### 2. 
+   Create a .envb file in the project root directory and configure the required environment variables.
+
+### 3.
+   Run following command from the directory containing docker-compose.yml:
+   docker compose up -d --build
 
     Docker  Compose will build and start the application and PostgreSQL database.
-    Admin user and airports data is created automatically.   
-   
-## 4. Start the React
+    Admin user and airports data is created automatically. 
+
+### 4. Check container status 
+   docker compose ps
+
+### 5. Access the application
+   * Frontend: http://localhost:5173
+   * Booking API: http://localhost:8078
+   * Payment Service: http://localhost:8081
+
+### 6. View application logs
+
+   To inspect an individual service:
+
+   docker compose logs -f app
+   docker compose logs -f payment-service
+   docker compose logs -f kafka
+   docker compose logs -f frontend
+
+### 7. Stop the application
+   docker compose down
+
+## 4. Vite Configuration
+
+   When running inside Docker Compose, the proxy target uses the backend service name and its internal container port.
+
+   For example:
+
+   server: {
+      proxy: {
+         '/api': {
+            target: 'http://<backend-service-name>:8078',
+            changeOrigin: true
+                  }
+            }
+         }
+
+## 5. Start the React
 
     Start React with npm install and npm run dev
     
-## 4. Open the application
+## 6. Open the application
 
     After the containers have started, open the application in your browser:
 
